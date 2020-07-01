@@ -1,14 +1,10 @@
+const cors = require('cors');
 const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser');
 
 const path = require('path');
-
-const app = express();
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(express.static(path.join(__dirname, 'public/css/main.css')));
+const fs = require('fs');
 
 const WEATHER_API_KEY = 'df841d8214ff4f23acda87f9ff8a331a'
 const PIXABAY_API_KEY = '17137569-1cf0934b4fa10ceb0ecde5626'
@@ -159,9 +155,20 @@ const getTripInfo = async (destination, departure) => {
     }
 }
 
+const app = express();
 
-app.get('/', (req, res, next) => {
-    res.status(200).sendFile(path.join(__dirname, '..', 'client', 'views', 'index.html'));
+app.use(cors());
+app.use('/static', express.static(path.resolve(__dirname, '../../dist')));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+//app.use(express.static(path.join(__dirname, 'public/css/main.css')));
+
+
+
+app.get('/', (req, res) => {
+    const pathToHtmlFile = path.resolve(__dirname, '../../dist/index.html');
+    const contentFromHtmlFile = fs.readFileSync(pathToHtmlFile, 'utf-8');
+    res.status(200).send(contentFromHtmlFile);
 });
 
 app.post('/trip', (req, res, next) => {

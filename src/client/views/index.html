@@ -3,61 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Udacity Frontend ND - Capstone Project">
     <title>Trip Planner</title>
-
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <style>
-        button {
-            display: inline-block;
-            width: 12rem;
-            height: 4rem;
-            background: #2507bb;
-            color: white;
-            margin : 24px ;
-        }
-
-        .trip-form {
-            width: 20rem;
-            max-width: 90%;
-            margin: auto;
-        }
-
-        .form-control {
-            margin: 1rem 0;
-            width: 100%;
-        }
-
-        .form-control__input {
-            margin : 1rem 0;
-        }
-
-        .form-control label,
-        .form-control input {
-            display: block;
-        }
-
-        .form-control input {
-            border: 1px solid #dbc441;
-            font: inherit;
-            border-radius: 2px;
-        }
-
-        button.submit {
-            font: inherit;
-            border: 1px solid #3e00a1;
-            color: #3e00a1;
-            background: white;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-
-        button.submit:hover,
-        button.submit:active {
-            background: #3e00a1;
-            color: white;
-        }        
-    </style>
-
 </head>
 <body>
     <header></header>
@@ -73,7 +20,7 @@
                     <input type="text" name="departure" id="departure" placeholder="dd-mm-yyyy"> 
                 </div>
             </div>
-            <button id="add-trip" type="submit">Add Trip</button>
+            <button id="add-trip" class="submit" type="submit">Add Trip</button>
         </form>
     </section>
     <section class="trips">
@@ -84,40 +31,6 @@
 
     </footer>
 
-    <script>
-        //const axios = require('axios')
 
-        const validDate = (dayDate) => {
-            if (!dayDate.match(/\d{2}-\d{2}-\d{4}/)) {
-                return false;
-            }
-            const [day, month, year] = dayDate.split('-').map(str => parseInt(str, 10));
-            const currentYear = (new Date()).getFullYear();
-            return ( day >= 1 && day <= 31 && month >= 1 && month <= 12 && year >= currentYear )
-        }
-
-        const updateUI = (tripInfo) => {
-            console.log(tripInfo);
-        }
-
-        addTripButton = document.querySelector('#add-trip');
-        destinationInput =  document.querySelector('#destination');
-        departureInput = document.querySelector('#departure');
-
-        addTripButton.addEventListener('click', ( e ) => {
-            e.preventDefault();
-            const destination = destinationInput.value;
-            const departure = departureInput.value;
-            if (validDate(departure)) {
-                axios.post('/trip', {destination, departure})
-                .then( (resp) => {
-                    updateUI(resp.data);
-                })
-            } else {
-                alert(`${dayDate} is not a valid date! Try again.`);
-            }    
-        });
-
-    </script>
 </body>
 </html>

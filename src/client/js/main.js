@@ -1,3 +1,5 @@
+import '../styles/main.css';
+
 const axios = require('axios')
 
 const validDate = (dayDate) => {
@@ -13,16 +15,18 @@ const updateUI = (tripInfo) => {
     console.log(tripInfo);
 }
 
-addTripButton = document.querySelector('#add-trip');
-destinationInput =  document.querySelector('#destination');
-departureInput = document.querySelector('#departure');
+const addTripButton = document.querySelector('#add-trip');
+const destinationInput =  document.querySelector('#destination');
+const departureInput = document.querySelector('#departure');
+
+const prefix = process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8888' : '';
 
 addTripButton.addEventListener('click', ( e ) => {
     e.preventDefault();
     const destination = destinationInput.value;
     const departure = departureInput.value;
     if (validDate(departure)) {
-        axios.post('/trip', {destination, departure})
+        axios.post(`${prefix}/trip`, {destination, departure})
         .then( (resp) => {
             updateUI(resp.data);
         })
