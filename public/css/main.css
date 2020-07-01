@@ -1,0 +1,49 @@
+button {
+    display: inline-block;
+    width: 12rem;
+    height: 4rem;
+    background: #2507bb;
+    color: white;
+    margin : 24px ;
+}
+
+.trip-form {
+    width: 20rem;
+    max-width: 90%;
+    margin: auto;
+}
+
+.form-control {
+    margin: 1rem 0;
+    width: 100%;
+}
+
+.form-control__input {
+    margin : 1rem 0;
+}
+
+.form-control label,
+.form-control input {
+    display: block;
+}
+
+.form-control input {
+    border: 1px solid #dbc441;
+    font: inherit;
+    border-radius: 2px;
+}
+
+button.submit {
+    font: inherit;
+    border: 1px solid #3e00a1;
+    color: #3e00a1;
+    background: white;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+button.submit:hover,
+button.submit:active {
+    background: #3e00a1;
+    color: white;
+}
