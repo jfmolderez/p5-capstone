@@ -1,4 +1,5 @@
-import '../styles/main.css';
+import '../styles/main.scss';
+import { Trip, renderMsg } from './trip';
 
 const axios = require('axios')
 
@@ -11,8 +12,29 @@ const validDate = (dayDate) => {
     return ( day >= 1 && day <= 31 && month >= 1 && month <= 12 && year >= currentYear )
 }
 
-const updateUI = (tripInfo) => {
+const updateUI = (tripInfo, departure) => {
     console.log(tripInfo);
+    if (tripInfo.ok) {
+        const trip = new Trip (
+            departure,
+            tripInfo.destination,
+            tripInfo.city,
+            tripInfo.country,
+            tripInfo.description,
+            tripInfo.forecast,
+            tripInfo.icon,
+            tripInfo.img,
+            tripInfo.lat,
+            tripInfo.lng,
+            tripInfo.temp,
+            tripInfo.timezone
+        );
+        trip.render();
+    }
+    const status = !tripInfo.ok ? 'failed' : tripInfo.status ? 'success' : 'warning';
+    const msgInfo = { text: tripInfo.msg, status };
+    renderMsg(msgInfo);
+    
 }
 
 const addTripButton = document.querySelector('#add-trip');
@@ -28,7 +50,7 @@ addTripButton.addEventListener('click', ( e ) => {
     if (validDate(departure)) {
         axios.post(`${prefix}/trip`, {destination, departure})
         .then( (resp) => {
-            updateUI(resp.data);
+            updateUI(resp.data, departure);
         })
     } else {
         alert(`${dayDate} is not a valid date! Try again.`);

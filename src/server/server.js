@@ -21,8 +21,8 @@ const planes = [
     "https://pixabay.com/get/52e5d5454c51ab14f1dc84609629307f1638dbe35a4c704c7c2c79d39044c751_640.jpg"
 ]
 
-const getCoordinates = async (city) => {
-    city = city.toLowerCase()
+const getCoordinates = async (destination) => {
+    const city = destination.toLowerCase()
     const url = city in countryCodes ?
         `http://api.geonames.org/postalCodeSearch?country=${countryCodes[city]}&placename=${encodeURI(city)}&maxRows=10&username=jfmolderez&type=json`:
         `http://api.geonames.org/postalCodeSearch?placename=${encodeURI(city)}&maxRows=10&username=jfmolderez&type=json`;
@@ -31,13 +31,13 @@ const getCoordinates = async (city) => {
 
     if (response.data.postalCodes.length === 0) {
         return {
-            city: city,
+            destination,
             ok: false 
         }
     } 
     const response_item  = response.data.postalCodes[0];
     return {
-        query: city, 
+        destination, 
         // postalCode: response_item.postalCode, 
         // country: response_item.countryCode,
         ok: true,
@@ -144,9 +144,9 @@ const getTripInfo = async (destination, departure) => {
     if ( coords.ok ) {
         let weather ;
         if (isNearDate(departure)) {
-            weather = await getForecastWeather(coords.lat, coords.lng, coords.query, transformDate(departure));
+            weather = await getForecastWeather(coords.lat, coords.lng, coords.destination, transformDate(departure));
         } else {
-            weather = await getCurrentWeather(coords.lat, coords.lng, coords.query);
+            weather = await getCurrentWeather(coords.lat, coords.lng, coords.destination);
         }
         const picture = await getPicture(destination, weather.country);
         return {...picture, ...coords, ...weather}
@@ -161,9 +161,6 @@ app.use(cors());
 app.use('/static', express.static(path.resolve(__dirname, '../../dist')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-//app.use(express.static(path.join(__dirname, 'public/css/main.css')));
-
-
 
 app.get('/', (req, res) => {
     const pathToHtmlFile = path.resolve(__dirname, '../../dist/index.html');
@@ -172,8 +169,8 @@ app.get('/', (req, res) => {
 });
 
 app.post('/trip', (req, res, next) => {
-    console.log("Server received a POST request !")
-    console.log(req.body);
+    //console.log("Server received a POST request !")
+    //console.log(req.body);
     destination = req.body.destination;
     departure = req.body.departure;
     getTripInfo(destination, departure)
