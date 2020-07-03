@@ -30,7 +30,7 @@ class Trip {
 
         const city = document.createElement('li');
         city.innerHTML = `Weather Station : ${this.city}`;
-        ul.appendChild(departure);
+        ul.appendChild(city);
 
         const forecast = document.createElement('li');
         forecast.innerHTML = this.forecast ? 'Weather Forecast' : 'Current Weather';
@@ -44,6 +44,14 @@ class Trip {
         img.innerHTML = `${this.img}`;
         ul.appendChild(img);
 
+        const description = document.createElement('li');
+        description.innerHTML = `Weather : ${this.description}`;
+        ul.appendChild(description);
+
+        const temp = document.createElement('li');
+        temp.innerHTML = `Temperature : ${this.temp} °C`;
+        ul.appendChild(temp);
+
         const lat = document.createElement('li');
         lat.innerHTML = `Latitude : ${this.lat}`;
         ul.appendChild(lat);
@@ -51,10 +59,6 @@ class Trip {
         const lng = document.createElement('li');
         lng.innerHTML = `Longitude : ${this.lng}`;
         ul.appendChild(lng);
-
-        const temp = document.createElement('li');
-        temp.innerHTML = `Weather Station : ${this.city}`;
-        ul.appendChild(temp);
 
         const timezone = document.createElement('li');
         timezone.innerHTML = `Timezone : ${this.timezone}`;
