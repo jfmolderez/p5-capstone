@@ -45,19 +45,19 @@ class Trip {
         ul.appendChild(img);
 
         const lat = document.createElement('li');
-        lat.innerHTML = `Weather Station : ${this.lat}`;
+        lat.innerHTML = `Latitude : ${this.lat}`;
         ul.appendChild(lat);
 
         const lng = document.createElement('li');
-        lng.innerHTML = `Weather Station : ${this.lng}`;
+        lng.innerHTML = `Longitude : ${this.lng}`;
         ul.appendChild(lng);
 
         const temp = document.createElement('li');
-        temp.innerHTML = `Weather Station : ${this.temp}`;
+        temp.innerHTML = `Weather Station : ${this.city}`;
         ul.appendChild(temp);
 
         const timezone = document.createElement('li');
-        timezone.innerHTML = `Weather Station : ${this.timezone}`;
+        timezone.innerHTML = `Timezone : ${this.timezone}`;
         ul.appendChild(timezone);
 
         trips.appendChild(ul);
