@@ -1,7 +1,21 @@
 import '../styles/trips.scss';
 
+const liMaker = (parent, text) => {
+    const li =  document.createElement('li');
+    li.textContent = text;
+    parent.appendChild(li);
+}
+
+const diffDays = (departure) => {
+    const [day, month, year] = departure.split('-');
+    const departureDate = new Date(`${month}/${day}/${year}`);
+    const currentDate = new Date();
+    const diffTime = departureDate - currentDate; // Math.abs not needed
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+}
+
 class Trip {
-    constructor(departure, destination, city, country, description, forecast, icon, img, lat, lng, temp, timezone) {
+    constructor(departure, destination, city, country, description, forecast, icon, img, lat, lng, temp, timezone, status, msg) {
         this.departure = departure;
         this.destination = destination,
         this.city = city;
@@ -14,64 +28,73 @@ class Trip {
         this.lng = lng;
         this.temp = temp;
         this.timezone = timezone;
+        this.status = status? 'success' : 'warning';
+        this.msg = msg;
     }
 
     render() {
         const trips = document.querySelector('.trips');
-        const ul = document.createElement('ul');
         
-        const departure = document.createElement('li');
-        departure.innerHTML = `Departure : ${this.departure}`;
-        ul.appendChild(departure);
+        const trip = document.createElement('div');
+        trip.classList.add('trip');
 
-        const destination = document.createElement('li');
-        departure.innerHTML = `Destination : ${this.destination}`;
-        ul.appendChild(departure);
+        const tripImg = document.createElement('div');
+        tripImg.classList.add('trip__image');
+        tripImg.style.backgroundImage = `url(${this.img})`; 
+        trip.appendChild(tripImg);
 
-        const city = document.createElement('li');
-        city.innerHTML = `Weather Station : ${this.city}`;
-        ul.appendChild(city);
+        const tripInfo = document.createElement('div');
+        tripInfo.classList.add('trip__info');
 
-        const forecast = document.createElement('li');
-        forecast.innerHTML = this.forecast ? 'Weather Forecast' : 'Current Weather';
-        ul.appendChild(forecast);
+        const tripTitle = document.createElement('h1');
+        tripTitle.classList.add('trip__title');
+        tripTitle.textContent = `Your trip to ${this.destination}`;
+        tripInfo.appendChild(tripTitle);
 
-        const icon = document.createElement('li');
-        icon.innerHTML = `${this.icon}`;
-        ul.appendChild(icon);
+        const tripSubtitle = document.createElement('h3');
+        tripSubtitle.classList.add('trip__subtitle');
+        tripSubtitle.textContent = `${diffDays(this.departure)} left before departure`;
+        tripInfo.appendChild(tripSubtitle);
 
-        const img = document.createElement('li');
-        img.innerHTML = `${this.img}`;
-        ul.appendChild(img);
+        const weatherItems = document.createElement('ul');
+        weatherItems.classList.add('trip__infoItems');
+        liMaker(weatherItems, `Destination: ${this.destination} (${this.country})`);
+        liMaker(weatherItems, `Departure: ${this.departure}`);
+        liMaker(weatherItems, `Latitude: ${this.lat}`);
+        liMaker(weatherItems, `Longitude: ${this.lng}`);
+        liMaker(weatherItems, `Timezone: ${this.timezone}`);
+        tripInfo.appendChild(weatherItems);
 
-        const description = document.createElement('li');
-        description.innerHTML = `Weather : ${this.description}`;
-        ul.appendChild(description);
+        const weatherTitle = document.createElement('h4');
+        weatherTitle.classList.add('weatherTitle');
+        weatherTitle.textContent = this.forecast ? `Weather Forecast ${this.departure}`: `Current Weather ${this.departure}`;
+        tripInfo.appendChild(weatherTitle);
 
-        const temp = document.createElement('li');
-        temp.innerHTML = `Temperature : ${this.temp} °C`;
-        ul.appendChild(temp);
+        const weather = document.createElement('div');
+        weather.classList.add('weather');
+        const weatherInfo = document.createElement('ul');
+        weatherInfo.classList.add('weather__info');
+        liMaker(weatherInfo, `${this.temp} °C`);
+        liMaker(weatherInfo, `${this.description}`);
+        weather.appendChild(weatherInfo);
+        const weatherImg = document.createElement('div');
+        weatherImg.classList.add('weather__image');
+        weatherImg.style.backgroundImage = `url(${this.icon})`; 
+        weather.appendChild(weatherImg);
+        tripInfo.appendChild(weather);
 
-        const lat = document.createElement('li');
-        lat.innerHTML = `Latitude : ${this.lat}`;
-        ul.appendChild(lat);
+        trip.appendChild(tripInfo);
 
-        const lng = document.createElement('li');
-        lng.innerHTML = `Longitude : ${this.lng}`;
-        ul.appendChild(lng);
+        const msg = document.createElement('div');
+        msg.classList.add('message');
+        msg.classList.add(this.status);
+        const msgText = document.createElement('p');
+        msgText.textContent = this.msg;
+        msg.appendChild(msgText);
 
-        const timezone = document.createElement('li');
-        timezone.innerHTML = `Timezone : ${this.timezone}`;
-        ul.appendChild(timezone);
-
-        trips.appendChild(ul);
+        trip.appendChild(msg);
+        trips.appendChild(trip);
     }
 }
 
-const renderMsg = ( msgInfo ) => {
-    const message = document.querySelector('.msg');
-    message.innerText = msgInfo.text;
-
-}
-
-export { Trip, renderMsg };
+export { Trip };

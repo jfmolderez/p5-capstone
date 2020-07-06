@@ -14,6 +14,7 @@ const validDate = (dayDate) => {
 
 const updateUI = (tripInfo, departure) => {
     console.log(tripInfo);
+    console.log('departure : ', departure);
     if (tripInfo.ok) {
         const trip = new Trip (
             departure,
@@ -27,13 +28,15 @@ const updateUI = (tripInfo, departure) => {
             tripInfo.lat,
             tripInfo.lng,
             tripInfo.temp,
-            tripInfo.timezone
+            tripInfo.timezone,
+            tripInfo.status, 
+            tripInfo.msg
         );
         trip.render();
     }
-    const status = !tripInfo.ok ? 'failed' : tripInfo.status ? 'success' : 'warning';
-    const msgInfo = { text: tripInfo.msg, status };
-    renderMsg(msgInfo);
+    else {
+        // TODO : modal
+    }
     
 }
 

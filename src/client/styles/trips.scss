@@ -1,3 +1,76 @@
+* {
+    box-sizing: border-box;
+}
+
 .trips {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
 }
+
+.container {
+    max-width: 1300px;
+    margin: 3rem 1.5rem;
+    padding: 2rem 1rem;
+    border: 1px solid black;
+}
+
+
+
+.trip {
+    display:flex;
+    flex-direction: column;
+    width: 500px;
+    border: 1px solid gray;
+    align-items: center;
+
+    ul {
+        list-style: none;
+    }
+
+    li {
+        padding: .1rem 0;
+    }
+
+    &__image {  
+        //background:url('https://pixabay.com/get/5ee4d34b4d51b10ff3d8992cc62f367d123ad8ec4e50744076267fdd934ecd_640.jpg');
+        width: 100%;
+        height: 530px;
+        background-repeat: no-repeat;
+    }  
+}
+
+h4.weatherTitle{
+    margin-bottom: 0;
+}
+
+.weather {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    
+    &__info {
+      margin-top: 2rem;
+      width: 40%;
+    }
+    
+    &__image {
+      // background:url('https://www.weatherbit.io/static/img/icons/c03d.png');
+      width: 60%;
+      height: 200px;
+      background-repeat: no-repeat;
+    }
+  }
+  
+  .message {
+    padding: 0 .5rem;
+  }
+
+  .success {
+    background: lightgreen;
+  }
+
+  .warning {
+    background: #e99851;
+  }
