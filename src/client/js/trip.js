@@ -1,6 +1,6 @@
 import '../styles/trips.scss';
 import '../styles/utils.scss';
-import {liMaker, diffDays} from './utils';
+import {liMaker, diffDays, getCurrentDate} from './utils';
 
 const tripCardMaker = () => {
     const trips = document.querySelector('.trips');
@@ -74,7 +74,7 @@ class Trip {
 
         const weatherTitle = document.createElement('h4');
         weatherTitle.classList.add('weatherTitle');
-        weatherTitle.textContent = this.forecast ? `Weather Forecast ${this.departure}`: `Current Weather ${this.departure}`;
+        weatherTitle.textContent = this.forecast ? `Weather Forecast ${this.departure}`: `Current Weather ${getCurrentDate()}`;
         tripInfo.appendChild(weatherTitle);
 
         const weather = document.createElement('div');

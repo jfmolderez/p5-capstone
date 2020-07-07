@@ -7,6 +7,7 @@
     flex-wrap: wrap;
     justify-content: flex-start;
     align-items: center;
+    margin-top: 100px;
 }
 
 .loader {
@@ -20,7 +21,7 @@
   margin: 1.5rem 1rem;
 
   .trip {
-    
+    margin-bottom: 1.2rem;
     display:flex;
     flex-direction: column;
     width: 400px;
@@ -93,12 +94,12 @@
 
     .remove {
 
-      display:block;
-      background : blue;
-      color:white;
-      margin: 1rem auto;
-      border-radius: 5px;
-      cursor: pointer;
+      // display:block;
+      // background : blue;
+      // color:white;
+      // margin: 1rem auto;
+      // border-radius: 5px;
+      margin-top: 2rem;
     
     }
   }
