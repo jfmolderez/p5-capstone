@@ -1,17 +1,21 @@
 import '../styles/trips.scss';
+import '../styles/utils.scss';
+import {liMaker, diffDays} from './utils';
 
-const liMaker = (parent, text) => {
-    const li =  document.createElement('li');
-    li.textContent = text;
-    parent.appendChild(li);
-}
-
-const diffDays = (departure) => {
-    const [day, month, year] = departure.split('-');
-    const departureDate = new Date(`${month}/${day}/${year}`);
-    const currentDate = new Date();
-    const diffTime = departureDate - currentDate; // Math.abs not needed
-    return Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+const tripCardMaker = () => {
+    const trips = document.querySelector('.trips');
+    const loader = document.createElement('div');
+    const spinner = `
+        <div class="loader">
+            <svg width="50" height="50">
+            <path fill="#c779d0" d="M25,5A20,20,0,0,1,44.87,22.72,2.52,2.52,0,0,0,47.36,25h0a2.52,2.52,0,0,0,2.48-2.82,25,25,0,0,0-49.68,0A2.52,2.52,0,0,0,2.64,25h0a2.52,2.52,0,0,0,2.49-2.28A20,20,0,0,1,25,5Z">
+            <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.5s" repeatCount="indefinite" />
+            </path>
+            </svg> 
+        </div>   
+    `;
+    loader.insertAdjacentHTML('afterbegin', spinner);
+    trips.appendChild(loader);
 }
 
 class Trip {
@@ -33,9 +37,12 @@ class Trip {
     }
 
     render() {
+
         const trips = document.querySelector('.trips');
-        
-        const trip = document.createElement('div');
+        const tripCard = document.createElement('div', {'id': `trip_${this.id}`});
+        tripCard.classList.add('tripCard');
+        // tripCard.id = `trip_${this.tripId}`;
+        const trip = document.createElement('div')
         trip.classList.add('trip');
 
         const tripImg = document.createElement('div');
@@ -53,7 +60,7 @@ class Trip {
 
         const tripSubtitle = document.createElement('h3');
         tripSubtitle.classList.add('trip__subtitle');
-        tripSubtitle.textContent = `${diffDays(this.departure)} left before departure`;
+        tripSubtitle.textContent = `${diffDays(this.departure)} days left before departure`;
         tripInfo.appendChild(tripSubtitle);
 
         const weatherItems = document.createElement('ul');
@@ -93,8 +100,17 @@ class Trip {
         msg.appendChild(msgText);
 
         trip.appendChild(msg);
-        trips.appendChild(trip);
+        tripCard.appendChild(trip);
+
+        const removeButton = document.createElement('button');
+        removeButton.classList.add('remove');
+        removeButton.textContent = 'Remove';
+        tripCard.appendChild(removeButton);
+
+
+        trips.removeChild(trips.lastChild);
+        trips.appendChild(tripCard);
     }
 }
 
-export { Trip };
+export { tripCardMaker, Trip };

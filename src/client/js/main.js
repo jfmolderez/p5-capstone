@@ -1,5 +1,6 @@
 import '../styles/main.scss';
-import { Trip, renderMsg } from './trip';
+import '../styles/utils.scss';
+import { tripCardMaker, Trip } from './trip';
 
 const axios = require('axios')
 
@@ -12,9 +13,20 @@ const validDate = (dayDate) => {
     return ( day >= 1 && day <= 31 && month >= 1 && month <= 12 && year >= currentYear )
 }
 
-const updateUI = (tripInfo, departure) => {
-    console.log(tripInfo);
-    console.log('departure : ', departure);
+const prefix = process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8888' : '';
+const addTripButton = document.querySelector('#add-trip');
+const destinationInput =  document.querySelector('#destination');
+const departureInput = document.querySelector('#departure');
+
+const clearInput = () => {
+    destinationInput.value = '';
+    departureInput.value = '';
+}
+
+const updateUI = (tripInfo, departure,) => {
+    // console.log(tripInfo);
+    // console.log('departure : ', departure);
+
     if (tripInfo.ok) {
         const trip = new Trip (
             departure,
@@ -33,24 +45,29 @@ const updateUI = (tripInfo, departure) => {
             tripInfo.msg
         );
         trip.render();
+
+        const removeButtons = document.querySelectorAll('.remove');
+        removeButtons.forEach( button => {
+            button.addEventListener('click', ( e ) => {
+                e.preventDefault();
+                const tripForRemoval = button.parentElement;
+                document.querySelector('.trips').removeChild(tripForRemoval);
+            });
+        })
     }
     else {
         // TODO : modal
-    }
-    
+    }    
 }
-
-const addTripButton = document.querySelector('#add-trip');
-const destinationInput =  document.querySelector('#destination');
-const departureInput = document.querySelector('#departure');
-
-const prefix = process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8888' : '';
 
 addTripButton.addEventListener('click', ( e ) => {
     e.preventDefault();
     const destination = destinationInput.value;
     const departure = departureInput.value;
+    clearInput();
+    // create trip card with load spinner ; provide an id
     if (validDate(departure)) {
+        tripCardMaker();
         axios.post(`${prefix}/trip`, {destination, departure})
         .then( (resp) => {
             updateUI(resp.data, departure);
@@ -59,5 +76,7 @@ addTripButton.addEventListener('click', ( e ) => {
         alert(`${dayDate} is not a valid date! Try again.`);
     }    
 });
+
+
 
 

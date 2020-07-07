@@ -54,7 +54,7 @@ const getCurrentWeather = async (lat, lng, query) => {
     const status = query.toLowerCase() === city.toLowerCase();
     const msg = status ?
         `Success : Current weather for ${city} has been successfully retrieved from Weatherbit API.`:
-        `Warning : Current weather has been retrieved for city ${city} that does not match with your query ${query}.`;
+        `Warning : Info retrieved for city ${city} may not correspond to your query ${query}.`;
     
     return {
         //lat: lat,
@@ -83,7 +83,7 @@ const getForecastWeather = async (lat, lng, query, dayDate) => {
     const status = query.toLowerCase() === city.toLowerCase();
     const msg = status ?
         `Success : Weather forecast for ${city} has been successfully retrieved from Weatherbit API.`:
-        `Warning : Weather forecast has been retrieved for city ${city} that does not match with your query ${query}.`;
+        `Warning : Weather info retrieved for city ${city}. Check the coordinates.`;
     return {
         temp: response_item[0].temp,
         timezone: response.data.timezone,

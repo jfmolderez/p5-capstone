@@ -33,17 +33,3 @@ button {
     border-radius: 2px;
 }
 
-button.submit {
-    font: inherit;
-    border: 1px solid #3e00a1;
-    color: #3e00a1;
-    background: white;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-button.submit:hover,
-button.submit:active {
-    background: #3e00a1;
-    color: white;
-}        
