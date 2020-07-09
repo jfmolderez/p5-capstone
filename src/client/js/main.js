@@ -1,6 +1,4 @@
-import '../styles/main.scss';
-import '../styles/utils.scss';
-import { tripCardMaker, Trip } from './trip';
+import { spinnerMaker, Trip } from './trip';
 
 const axios = require('axios')
 
@@ -17,6 +15,8 @@ const prefix = process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8888' 
 const addTripButton = document.querySelector('#add-trip');
 const destinationInput =  document.querySelector('#destination');
 const departureInput = document.querySelector('#departure');
+const backdrop = document.querySelector('.backdrop');
+
 
 const clearInput = () => {
     destinationInput.value = '';
@@ -44,16 +44,14 @@ const updateUI = (tripInfo, departure,) => {
             tripInfo.status, 
             tripInfo.msg
         );
-        trip.render();
 
-        const removeButtons = document.querySelectorAll('.remove');
-        removeButtons.forEach( button => {
-            button.addEventListener('click', ( e ) => {
-                e.preventDefault();
-                const tripForRemoval = button.parentElement;
-                document.querySelector('.trips').removeChild(tripForRemoval);
-            });
-        })
+        const removeButtonId = trip.render();
+        const removeButton = document.querySelector(`#${removeButtonId}`);
+        removeButton.addEventListener('click', ( e ) => {
+            e.preventDefault();
+            const tripForRemoval = removeButton.parentElement;
+            document.querySelector('.trips').removeChild(tripForRemoval);
+        });
     }
     else {
         // TODO : modal
@@ -67,7 +65,7 @@ addTripButton.addEventListener('click', ( e ) => {
     clearInput();
     // create trip card with load spinner ; provide an id
     if (validDate(departure)) {
-        tripCardMaker();
+        spinnerMaker();
         axios.post(`${prefix}/trip`, {destination, departure})
         .then( (resp) => {
             updateUI(resp.data, departure);
@@ -80,3 +78,7 @@ addTripButton.addEventListener('click', ( e ) => {
 
 
 
+
+/* backdrop.addEventListener('click', () => {
+    backdrop.style.display ='none';
+}); */

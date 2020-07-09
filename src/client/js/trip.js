@@ -1,12 +1,11 @@
-import '../styles/trips.scss';
-import '../styles/utils.scss';
 import {liMaker, diffDays, getCurrentDate} from './utils';
 
-const tripCardMaker = () => {
+const spinnerMaker = () => {
     const trips = document.querySelector('.trips');
-    const loader = document.createElement('div');
+    const loadSpinner = document.createElement('div');
+    loadSpinner.classList.add('loader');
     const spinner = `
-        <div class="loader">
+        <div>
             <svg width="50" height="50">
             <path fill="#c779d0" d="M25,5A20,20,0,0,1,44.87,22.72,2.52,2.52,0,0,0,47.36,25h0a2.52,2.52,0,0,0,2.48-2.82,25,25,0,0,0-49.68,0A2.52,2.52,0,0,0,2.64,25h0a2.52,2.52,0,0,0,2.49-2.28A20,20,0,0,1,25,5Z">
             <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.5s" repeatCount="indefinite" />
@@ -14,11 +13,14 @@ const tripCardMaker = () => {
             </svg> 
         </div>   
     `;
-    loader.insertAdjacentHTML('afterbegin', spinner);
-    trips.appendChild(loader);
+    loadSpinner.insertAdjacentHTML('afterbegin', spinner);
+    trips.appendChild(loadSpinner);
 }
 
+let tripIndex = 0;
+
 class Trip {
+
     constructor(departure, destination, city, country, description, forecast, icon, img, lat, lng, temp, timezone, status, msg) {
         this.departure = departure;
         this.destination = destination,
@@ -34,6 +36,9 @@ class Trip {
         this.timezone = timezone;
         this.status = status? 'success' : 'warning';
         this.msg = msg;
+
+        this.id = tripIndex;
+        tripIndex = tripIndex + 1;
     }
 
     render() {
@@ -41,7 +46,7 @@ class Trip {
         const trips = document.querySelector('.trips');
         const tripCard = document.createElement('div', {'id': `trip_${this.id}`});
         tripCard.classList.add('tripCard');
-        // tripCard.id = `trip_${this.tripId}`;
+        
         const trip = document.createElement('div')
         trip.classList.add('trip');
 
@@ -103,14 +108,16 @@ class Trip {
         tripCard.appendChild(trip);
 
         const removeButton = document.createElement('button');
+        removeButton.id = `remove_${this.id}`;
         removeButton.classList.add('remove');
         removeButton.textContent = 'Remove';
         tripCard.appendChild(removeButton);
 
-
-        trips.removeChild(trips.lastChild);
+        trips.removeChild(trips.lastChild);  // deletes the spinner
         trips.appendChild(tripCard);
+
+        return removeButton.id ;
     }
 }
 
-export { tripCardMaker, Trip };
+export { spinnerMaker, Trip };
