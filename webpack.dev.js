@@ -52,7 +52,8 @@ module.exports = {
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             template: 'src/client/views/index.html',
-            filename: "index.html"
+            filename: "index.html",
+            title: 'Trip Planner'
         }),
     ]
 }

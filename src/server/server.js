@@ -159,6 +159,7 @@ const app = express();
 
 app.use(cors());
 app.use('/static', express.static(path.resolve(__dirname, '../../dist')));
+app.use('/static', express.static(path.resolve(__dirname, '../../public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 

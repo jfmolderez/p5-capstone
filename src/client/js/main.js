@@ -1,4 +1,4 @@
-import { spinnerMaker, Trip } from './trip';
+import { spinnerMaker,Trip } from './trip';
 
 const axios = require('axios')
 
