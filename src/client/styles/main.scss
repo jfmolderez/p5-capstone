@@ -41,6 +41,10 @@ body {
     background: lightgreen; //#2ddf5c;
     padding: .5rem;
     z-index: 1;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .trip-form {
@@ -101,24 +105,28 @@ body {
 
 
 
-@media (min-width: 642px) {
+@media (min-width: 650px) {
     html {
         font-size: 100%;
     }
     .main-header {
         height: 6rem;
-    }
-    .trip-form {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
-        margin: .9rem 0;
+        display: block;
 
-        .form-control {
+        .trip-form {
+            max-width: 900px;
             display: flex;
             flex-direction: row;
-            padding-top: .5rem;
+            justify-content: space-around;
+            // align-items: center;
+            margin: .9rem 0;
+
+            .form-control {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding-top: .5rem;
+            }
         }
     }
 

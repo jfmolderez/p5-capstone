@@ -9,19 +9,19 @@
 <body>
     <div class="backdrop"></div>
     <header class="main-header">
-        <form class="trip-form">
+        <div class="trip-form">
             <div class="form-control">
                 <div class="form-control__input">
                     <label for="destination">My trip to : </label>
-                    <input type="text" name="destination" id="destination"> 
+                    <input type="text" name="destination" id="destination" required> 
                 </div>
                 <div class="form-control__input">
                     <label for="departure">Departure : </label>
-                    <input type="text" name="departure" id="departure" placeholder="dd-mm-yyyy"> 
+                    <input type="text" name="departure" id="departure" placeholder="dd-mm-yyyy" required> 
                 </div>
             </div>
             <button id="add-trip" class="submit" type="submit">Add Trip</button>
-        </form>
+        </div>
     </header>
 
     <section class="trips">
@@ -35,7 +35,15 @@
         <p class="footer__item">Terms of use</p>
     </footer>
 
-    <script src="static/js/pwa.js"></script>
+    <script>
+        // Check that service workers are supported
+        if ( 'serviceWorker' in navigator ) {
+            // Use the window load event 
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js');
+            })
+        }
+    </script>
 
 </body>
 </html>

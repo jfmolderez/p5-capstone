@@ -17,6 +17,11 @@ const spinnerMaker = () => {
     trips.appendChild(loadSpinner);
 }
 
+const removeSpinner = () => {
+    const trips = document.querySelector('.trips');
+    trips.removeChild(trips.lastChild);
+}
+
 let tripIndex = 0;
 
 class Trip {
@@ -65,7 +70,9 @@ class Trip {
 
         const tripSubtitle = document.createElement('h3');
         tripSubtitle.classList.add('trip__subtitle');
-        tripSubtitle.textContent = `${diffDays(this.departure)} days left before departure`;
+        const nBefore = diffDays(this.departure);
+        const daysText = nBefore > 1 ? 'days' : 'day';
+        tripSubtitle.textContent = `${nBefore} ${daysText} left before departure`;
         tripInfo.appendChild(tripSubtitle);
 
         const weatherItems = document.createElement('ul');
@@ -120,4 +127,4 @@ class Trip {
     }
 }
 
-export { spinnerMaker, Trip };
+export { spinnerMaker, removeSpinner, Trip };

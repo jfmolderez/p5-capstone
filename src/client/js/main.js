@@ -1,15 +1,7 @@
-import { spinnerMaker,Trip } from './trip';
+import { spinnerMaker, removeSpinner, Trip } from './trip';
+import { validDestination, validDate } from './utils';
 
 const axios = require('axios')
-
-const validDate = (dayDate) => {
-    if (!dayDate.match(/\d{2}-\d{2}-\d{4}/)) {
-        return false;
-    }
-    const [day, month, year] = dayDate.split('-').map(str => parseInt(str, 10));
-    const currentYear = (new Date()).getFullYear();
-    return ( day >= 1 && day <= 31 && month >= 1 && month <= 12 && year >= currentYear )
-}
 
 const prefix = process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8888' : '';
 const addTripButton = document.querySelector('#add-trip');
@@ -24,8 +16,6 @@ const clearInput = () => {
 }
 
 const updateUI = (tripInfo, departure,) => {
-    // console.log(tripInfo);
-    // console.log('departure : ', departure);
 
     if (tripInfo.ok) {
         const trip = new Trip (
@@ -54,7 +44,8 @@ const updateUI = (tripInfo, departure,) => {
         });
     }
     else {
-        // TODO : modal
+        removeSpinner();
+        alert(`Could not find the location of your destination ${tripInfo.destination}`);
     }    
 }
 
@@ -63,22 +54,20 @@ addTripButton.addEventListener('click', ( e ) => {
     const destination = destinationInput.value;
     const departure = departureInput.value;
     clearInput();
-    // create trip card with load spinner ; provide an id
-    if (validDate(departure)) {
+
+    if (validDate(departure) && validDestination(destination)) {
         spinnerMaker();
         axios.post(`${prefix}/trip`, {destination, departure})
         .then( (resp) => {
             updateUI(resp.data, departure);
         })
     } else {
-        alert(`${dayDate} is not a valid date! Try again.`);
+        if (!validDate(departure)) {
+            alert(`${departure} is not a valid date! Try again.`);
+        } else {
+            alert(`${destination} is not a valid city! Try again.`);
+        }
     }    
 });
 
 
-
-
-
-/* backdrop.addEventListener('click', () => {
-    backdrop.style.display ='none';
-}); */

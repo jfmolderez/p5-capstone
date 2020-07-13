@@ -20,4 +20,21 @@ const getCurrentDate = () => {
     return `${day}-${month}-${year}`;
 }
 
-export { liMaker, diffDays, getCurrentDate };
+const validDestination = (destination) => {
+    return (/^[a-zA-Z ]+$/.test(destination) && destination.length > 2) ;
+}
+
+const validDate = (dayDate) => {
+    if (!dayDate.match(/\d{2}-\d{2}-\d{4}/)) {
+        return false;
+    };
+    if (diffDays(dayDate) < 0 ) {
+        return false;
+    };
+
+    const [day, month, year] = dayDate.split('-').map(str => parseInt(str, 10));
+    const currentYear = (new Date()).getFullYear();
+    return ( day >= 1 && day <= 31 && month >= 1 && month <= 12 && year >= currentYear );
+}
+
+export { liMaker, diffDays, getCurrentDate, validDestination, validDate };

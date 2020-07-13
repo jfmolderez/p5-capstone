@@ -9,8 +9,10 @@ const fs = require('fs');
 const WEATHER_API_KEY = 'df841d8214ff4f23acda87f9ff8a331a'
 const PIXABAY_API_KEY = '17137569-1cf0934b4fa10ceb0ecde5626'
 
+const cities = { 'cairo': 'al qahirah', 'le caire' : 'al qahirah' }
+
 const countryCodes = {
-    'paris' : 'fr', 'moscow': 'ru', 'los angeles' : 'us'
+    'paris' : 'fr', 'moscow': 'ru', 'los angeles' : 'us',  'san francisco' : 'us'
 }
 
 const planes = [
@@ -22,7 +24,8 @@ const planes = [
 ]
 
 const getCoordinates = async (destination) => {
-    const city = destination.toLowerCase()
+    let city = destination.toLowerCase();
+    city = city in cities ? cities[city] : city ;
     const url = city in countryCodes ?
         `http://api.geonames.org/postalCodeSearch?country=${countryCodes[city]}&placename=${encodeURI(city)}&maxRows=10&username=jfmolderez&type=json`:
         `http://api.geonames.org/postalCodeSearch?placename=${encodeURI(city)}&maxRows=10&username=jfmolderez&type=json`;
@@ -38,11 +41,9 @@ const getCoordinates = async (destination) => {
     const response_item  = response.data.postalCodes[0];
     return {
         destination, 
-        // postalCode: response_item.postalCode, 
-        // country: response_item.countryCode,
         ok: true,
-        lat: response_item.lat.toFixed(3) , // parseFloat(response_item.lat).toFixed(3),
-        lng: response_item.lng.toFixed(3)   // parseFloat(response_item.lng).toFixed(3)
+        lat: response_item.lat.toFixed(3) , 
+        lng: response_item.lng.toFixed(3)   
     }
 };
 
@@ -57,8 +58,7 @@ const getCurrentWeather = async (lat, lng, query) => {
         `Warning : Info retrieved for city ${city} may not correspond to your query ${query}.`;
     
     return {
-        //lat: lat,
-        //lng: lng,
+
         temp: response_item.temp,
         timezone: response_item.timezone,
         country: response_item.country_code, 
@@ -100,7 +100,6 @@ const getForecastWeather = async (lat, lng, query, dayDate) => {
 const getPicture = async (city, countryCode) => {
     let url = `https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=${city}&image_type=photo`;
     let response = await axios.get(url);
-    //console.log("hits : ", response.data.hits);
     let nbHits = response.data.hits.length;
     let fullImg, img ;
     if (nbHits > 0) {
@@ -158,8 +157,7 @@ const getTripInfo = async (destination, departure) => {
 const app = express();
 
 app.use(cors());
-app.use('/static', express.static(path.resolve(__dirname, '../../dist')));
-app.use('/static', express.static(path.resolve(__dirname, '../../public')));
+app.use(express.static('./dist'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -170,8 +168,6 @@ app.get('/', (req, res) => {
 });
 
 app.post('/trip', (req, res, next) => {
-    //console.log("Server received a POST request !")
-    //console.log(req.body);
     destination = req.body.destination;
     departure = req.body.departure;
     getTripInfo(destination, departure)
