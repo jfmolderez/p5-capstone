@@ -55,7 +55,7 @@ const getCurrentWeather = async (lat, lng, query) => {
     const status = query.toLowerCase() === city.toLowerCase();
     const msg = status ?
         `Success : Current weather for ${city} has been successfully retrieved from Weatherbit API.`:
-        `Warning : Info retrieved for city ${city} may not correspond to your query ${query}.`;
+        `Warning : Forecast retrieved for station ${city} may not correspond to ${query}. Check the coordinates.`;
     
     return {
 
@@ -98,6 +98,8 @@ const getForecastWeather = async (lat, lng, query, dayDate) => {
 }
 
 const getPicture = async (city, countryCode) => {
+
+    // fetch image corresponding to the city
     let url = `https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=${city}&image_type=photo`;
     let response = await axios.get(url);
     let nbHits = response.data.hits.length;
@@ -108,6 +110,7 @@ const getPicture = async (city, countryCode) => {
         return { img };
     } 
 
+    // fetch images corresponding to the country
     const countryUrl = `https://restcountries.eu/rest/v2/alpha/${countryCode}`;
     response = await axios.get(countryUrl);
     const country = response.data.name;
@@ -117,11 +120,12 @@ const getPicture = async (city, countryCode) => {
     if (nbHits > 0) {
         fullImg = response.data.hits[Math.floor(Math.random() * nbHits)];
         img = fullImg.webformatURL;
-        return {img};
+        return { img };
     } 
     
+    // get fallback image
     img = planes[Math.floor(Math.random() * planes.length)];
-    return {img};
+    return { img };
 }
 
 const isNearDate = (dayDate) => {
